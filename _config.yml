@@ -6,10 +6,10 @@ url: https://green-m.github.io/
 resume_site: http://www.hifreud.com/Resume.io/
 github: https://github.com/Green-m
 baseurl: ""
-description: Actually, less is more!
-meta_description: The more know the more need to learn.
-motto: It's our wits that make us men.
-banner: FUCK EVERYTHING.
+description: Do things that others can't do.
+meta_description: 
+motto: The more know the more need to learn.
+banner: Be Modesty.
 
 #permalink: /:categories/:year/:month/:day/:title/
 permalink: /:year/:month/:day/:title/
