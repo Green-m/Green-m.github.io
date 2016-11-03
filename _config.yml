@@ -3,7 +3,7 @@ name: Green_m
 email: suckmine180@hotmail.com
 author: Green_m
 url: https://green-m.github.io/
-resume_site: http://www.hifreud.com/Resume.io/
+resume_site: http://weibo.com/u/2585957090
 github: https://github.com/Green-m
 baseurl: ""
 description: Do things that others can't do.
@@ -25,7 +25,7 @@ markdown: kramdown
 
 FB:
   comments :
-    provider : duoshuo
+    provider : api.duoshuo.com
     duoshuo:
         short_name : __Green_m
     disqus :
