@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 相关博客
+title: 友情链接
 permalink: /reference/
 ---
 
@@ -8,6 +8,6 @@ permalink: /reference/
 {:toc}
 
 
-Github
+blog
 =====================
-[Green_m的github](https://github.com/Green-m)
+[Lin的blog](http://linll.github.io)
