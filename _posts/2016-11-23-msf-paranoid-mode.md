@@ -60,8 +60,8 @@ tag: Bypass AV
 
 同上，stageless 修改相应payload。
 
-总结：偏执模式基于SSL/TLS认证过某些流量监控效果应该很不错，测试也过了symantec，仅供参考。
-------------------------------------------------
+**总结：偏执模式基于SSL/TLS认证过某些流量监控效果应该很不错，测试也过了symantec，仅供参考。**
+
 
 
 参考文章：https://github.com/rapid7/metasploit-framework/wiki/Meterpreter-Paranoid-Mode#create-a-ssltls-certificate
