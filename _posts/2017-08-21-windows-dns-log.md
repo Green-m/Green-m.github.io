@@ -41,7 +41,7 @@ net start dnscache
 
 参考链接：  
 
-http://blog.nsfocus.net/open-dns-client-service-log/
+[http://blog.nsfocus.net/open-dns-client-service-log/](http://blog.nsfocus.net/open-dns-client-service-log/)
 
 
 
@@ -61,9 +61,7 @@ http://blog.nsfocus.net/open-dns-client-service-log/
 文件重定向的坑
 -------------------
 
-很早就踩过这个重定向的坑无数次了，没想到用python的时候又踩了一次，还搞了很久，最后Stack Overflow解决的，不得不说Stack Overflow
-
-真是神器。
+很早就踩过这个重定向的坑无数次了，没想到用python的时候又踩了一次，还搞了很久，最后Stack Overflow解决的，不得不说Stack Overflow真是神器。
 
 具体的说就是32位python在c:\\windows\\system32\\ 目录下时会自动跳转到sysWOW64 目录下，解决方法是调用kernel.dll里的Wow64DisableWow64FsRedirection
 
@@ -72,7 +70,7 @@ http://blog.nsfocus.net/open-dns-client-service-log/
 
 最终脚本见： 
 
-https://github.com/Green-m/Demo/blob/master/dns_log_parse.py
+[https://github.com/Green-m/Demo/blob/master/dns_log_parse.py](https://github.com/Green-m/Demo/blob/master/dns_log_parse.py)
 
 
 windows的ETW方式
