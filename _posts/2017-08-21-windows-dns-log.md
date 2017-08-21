@@ -63,7 +63,7 @@ net start dnscache
 
 很早就踩过这个重定向的坑无数次了，没想到用python的时候又踩了一次，还搞了很久，最后Stack Overflow解决的，不得不说Stack Overflow真是神器。
 
-具体的说就是32位python在c:\\windows\\system32\\ 目录下时会自动跳转到sysWOW64 目录下，解决方法是调用kernel.dll里的Wow64DisableWow64FsRedirection
+具体的说就是32位python在c:\\windows\\system32\\ 目录下时会自动跳转到sysWOW64 目录下，解决方法是调用kernel.dll里Wow64DisableWow64FsRedirection
 
 和Wow64RevertWow64FsRedirection来禁用掉windows的文件重定向。然后直接访问就行了。
 
