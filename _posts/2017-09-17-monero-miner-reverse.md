@@ -131,7 +131,10 @@ Workio_thread线程
 
 ![/styles/images/monero/ta_6.png]({{ '/styles/images/monero/ta_6.png' | prepend: site.baseurl }})
 
-发送登录信息，"login":"4AGF7tHM5ZpR7FRndiPMk6MxR1nSA8HnAVd5pTxspDEcCRPknAnFAMAYpw8NmtbGFAeiakw6rxNpabQ2MyBKstBY8sTXaHr","pass":"x"
+发送登录信息
+
+"login":"4AGF7tHM5ZpR7FRndiPMk6MxR1nSA8HnAVd5pTxspDEcCRPknAnFAMAYpw8NmtbGFAeiakw6rxNpabQ2MyBKstBY8sTXaHr"
+"pass":"x"
 
 ![/styles/images/monero/ta_7.png]({{ '/styles/images/monero/ta_7.png' | prepend: site.baseurl }})
 
@@ -177,7 +180,7 @@ user.qzone.qq.com 2.21.243.64
 qzone.qq.com  2.21.243.59
 ```
 
-目前该qq空间地址已经无法访问，推测通过QQ空间作为C&C服务端。
+推测通过QQ空间作为C&C服务端，目前该qq空间地址已经无法访问。只剩51-cs.cn作为C&C服务端。
 
 51-cs.cn的whois信息
 
