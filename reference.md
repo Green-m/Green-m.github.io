@@ -10,8 +10,8 @@ permalink: /reference/
 
 blog
 =====================
-Lin的blog http://linll.github.io  
+Lin的blog [http://linll.github.io](http://linll.github.io)  
 
-e4st.world https://e4st.world/ 
+e4st.world [https://e4st.world](https://e4st.world/) 
 
-我鸡师傅  http://c-chicken.cc/
+我鸡师傅  [http://c-chicken.cc/](http://c-chicken.cc/)
