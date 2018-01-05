@@ -94,7 +94,7 @@ Bro主要的优点在于高速网络中大流量的分析能力比Snort强，这
 
 安装的时候踩过不少坑，一步一步找教程来安装的。后来整理了一个自动安装脚本，在其他机器上安装的时候方便多了。  
 
-安装脚本见 https://github.com/Green-m/Demo/blob/master/snort/snort_install.sh 
+安装脚本见 [https://github.com/Green-m/Demo/blob/master/snort/snort_install.sh ](https://github.com/Green-m/Demo/blob/master/snort/snort_install.sh)  
 
 `注：` 这个一键安装脚本是以`Centos 7 `为基础的，其他发行版请自己修改脚本。  
 
@@ -207,7 +207,7 @@ dumpcap -i eth0 -B 1024 -b duration:60 -b files:1000 -w /pcap/test.pcap
 关键代码如下：  
 
 ```
-		# pcaplist_total 表示目录下所有的pcap文件，以集合的方式表示
+	# pcaplist_total 表示目录下所有的pcap文件，以集合的方式表示
         pcaplist_total = list(set(pcaplist_total) - set(opening_files))
         # pcaplist_tohandle  表示未分析的pcap文件  
         pcaplist_tohandle = list(set(pcaplist_total) - set(pcaplist_handled))
@@ -242,7 +242,7 @@ dumpcap -i eth0 -B 1024 -b duration:60 -b files:1000 -w /pcap/test.pcap
 
 
 某些参数如进程数量，等待时间，文件个数可以根据自己的情况来调整。
-完整代码见 https://github.com/Green-m/Demo/blob/master/snort/snort_multiprocess.py 
+完整代码见 [https://github.com/Green-m/Demo/blob/master/snort/snort_multiprocess.py](https://github.com/Green-m/Demo/blob/master/snort/snort_multiprocess.py) 
 
 由于我们的流量还是属于比较大的，单机房每分钟1到2G，用这种方式来处理流量，是完全能够处理过来的，最多可能会有一到两分钟的延迟。 
 
@@ -431,8 +431,9 @@ if __name__ == '__main__':
 ```
 
 
-通过crontab每5分钟执行一次，每次查询近五分钟的事件，如果有满足的sid，就直接发邮件报警。 
+通过crontab每5分钟执行一次，每次查询近五分钟的事件，如果有满足的sid，就直接发邮件报警。   
 
+这里脚本我没有放出完整的，发送邮件的部分各位自己实现吧。  
 
 0x07 总结  
 ------------------
