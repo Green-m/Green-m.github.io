@@ -25,7 +25,11 @@ tag: shellcode
 0x01 导出表EAT的结构
 ------------------
 
-在进入正题之前，让我们先了解一下导出表EAT的数据结构。EAT的数据结构为 `IMAGE_EXPORT_DIRECTORY` ，`IMAGE_OPTIONAL_HEADER32.DataDirectory[0].VirtualAddress` 的值就是 `IMAGE_EXPORT_DIRECTORY`  结构体数组的起始地址（即RVA的值）
+在进入正题之前，让我们先了解一下导出表EAT的数据结构。
+
+EAT的数据结构为 `IMAGE_EXPORT_DIRECTORY` ，`IMAGE_OPTIONAL_HEADER32.DataDirectory[0].VirtualAddress` 的值就是 `IMAGE_EXPORT_DIRECTORY`  结构体数组的起始地址（即RVA的值）。
+
+
 其具体结构如下：
 
 ```
@@ -45,7 +49,8 @@ typedef struct _IMAGE_EXPORT_DIRECTORY {
 } IMAGE_EXPORT_DIRECTORY, *PIMAGE_EXPORT_DIRECTORY;
 ```
 
-如下图所示，描述的是 `kernel32.dll` 文件的 `IMAGE_EXPORT_DIRECTORY` 结构体与整个EAT结构。
+如下图所示，描述的是 `kernel32.dll` 文件的 `IMAGE_EXPORT_DIRECTORY` 结构体与整个EAT结构。 
+
 ![/styles/images/hashapi/EAT.png]({{ '/styles/images/hashapi/EAT.png' | prepend: site.baseurl }})
 
 图片来自于《逆向工程核心原理》113页。
@@ -76,19 +81,21 @@ typedef struct _IMAGE_EXPORT_DIRECTORY {
 
 通常的情况下，在内存中通过 shellcode 来进行函数名比对，来寻址到对应的API函数会浪费比较多的空间，尤其是某些函数名特别长的情况下。
 
-某些shellcode 作者会习惯性的利用固定的模块加载顺序来寻找模块，如kernel32.dll，这种写法的优势是小巧灵活，但是在不同的环境中，如xp和win7下，引入的 `kernelbase.dll ` 模块会导致很多shellcode失效。而在不同的环境下 `InLoadOrderModuleList` ，`InMemoryOrderModuleList`，`InInitializationOrderModuleList` 这三个结构体中模块加载的顺序也不同。在不同系统中加载模块顺序不同导致 shellcode 编写很容易出问题。 
+某些shellcode 作者会习惯性的利用固定的模块加载顺序来寻找模块，如kernel32.dll，这种写法的优势是小巧灵活，但是在不同的环境中，如xp和win7下，引入的 `kernelbase.dll ` 模块会导致很多shellcode失效。  
+
+而在不同的环境下 `InLoadOrderModuleList` ，`InMemoryOrderModuleList`，`InInitializationOrderModuleList` 这三个结构体中模块加载的顺序也不同。在不同系统中加载模块顺序不同导致 shellcode 编写很容易出问题。  
+
 
 通过Hash 来寻址API 其实和上面的 `GetProcAddress` 大体上类似，唯一的区别在于 Hash API 将函数名和模块名通过一些运算变成 Hash 值来进行查找和比较，避免了因为函数名过长而浪费大量的空间。也解决了模块加载顺序的问题，可以兼容各种平台。不过不如特定顺序寻址的方式灵活小巧。
 
 
 
-下面将以解释汇编代码片段的形式来介绍，完整代码见 [metasploit](https://github.com/rapid7/metasploit-framework/blob/master/external/source/shellcode/windows/x86/src/block/block_api.asm )
+下面将以解释汇编代码片段的形式来介绍，完整代码见 [metasploit](https://github.com/rapid7/metasploit-framework/blob/master/external/source/shellcode/windows/x86/src/block/block_api.asm )。
 
 
 
 ### 1. 定位 InMemoryOrderModuleList
 
-//因为ASLR载入随机地址的原因，我们在开始寻址前需要先找到加载模块的列表 `InMemoryOrderModuleList`
 
 我们在解析PEB的过程中，利用了`FS` 段寄存器， 在windows环境中， `FS` 段寄存器指向线程环境块（TEB）的地址，当在内存区运行shellcode时，我们需要从 TEB 所在的地址处移动48字节来得到 PEB 的地址，如下
 
@@ -104,7 +111,9 @@ api_call:
 
 ![/styles/images/hashapi/TEB.png]({{ '/styles/images/hashapi/TEB.png' | prepend: site.baseurl }}) 
 
-在找到 PEB 结构的地址后，再偏移12字节就能得到Ldr数据结构的地址。 Ldr 结构体包含了进程加载模块的信息，将其再偏移 20字节，我们就能从 `InMemoryOrderModuleList` 结构体中获得第一个已加载的模块。
+在找到 PEB 结构的地址后，再偏移12字节就能得到Ldr数据结构的地址。   
+
+Ldr 结构体包含了进程加载模块的信息，将其再偏移 20字节，我们就能从 `InMemoryOrderModuleList` 结构体中获得第一个已加载的模块。  
 
 ```
   	mov edx, [edx+12]      ; Get PEB->Ldr
@@ -186,7 +195,7 @@ typedef struct _LDR_DATA_TABLE_ENTRY
 继续下面的代码
 
 ```
-next_mod:                ;
+next_mod:                
   	mov esi, [edx+40]      ; 获得指向模块名称BaseDllName的地址
   	movzx ecx, word [edx+38] ; 指向BaseDllName->MaximumLength，表示该内存缓冲区的总大小
   	xor edi, edi           ; Clear EDI which will store the hash of the module name
@@ -197,14 +206,14 @@ next_mod:                ;
 
 
 ```
-loop_modname:            ;
+loop_modname:            
   	lodsb                  ; 逐字节读取模块名，和指令 lods byte ptr ds:[esi] 效果相同
   	cmp al, 'a'            ; 和字母'a'比较，这里是为了统一切换成大写
   	jl not_lowercase       ;
   	sub al, 0x20           ; 大写则跳转，小写则变为大写
-not_lowercase:           ;
+not_lowercase:           
   	ror edi, 13            ; 将hash值循环右移13位
- 	 add edi, eax           ; hash值与下一个字符相加，等到新的hash值
+    add edi, eax           ; hash值与下一个字符相加，等到新的hash值
   	loop loop_modname      ; 循环相加，循环次数为ecx，即BaseDllName的缓冲区大小
 ```
 
@@ -216,7 +225,7 @@ not_lowercase:           ;
 ### 3. 定位模块加载基址DllBase
 
 ```
-  	push edx               ; 保存edx，edx的值指向InMemoryOrderModuleList
+   push edx               ; 保存edx，edx的值指向InMemoryOrderModuleList
  	 push edi               ; 保存edi，edi为之前计算的模块hash
  	 mov edx, [edx+16]      ; [edx+16]为 `LDR_DATA_TABLE_ENTRY->DllBase` ,镜像加载内存中的基址
  	 mov ecx, [edx+60]      ; [edx+60] 指向 IMAGE_DOS_HEADER结构体中的e_lfanew，表示PE头的RVA地址
@@ -232,7 +241,7 @@ PE 头 结构如下图，IMAGE_DOS_HEADER->e_lfanew值为 000000E8，是PE头的
 
 ![/styles/images/hashapi/e_lfanew.png]({{ '/styles/images/hashapi/e_lfanew.png' | prepend: site.baseurl }}) 
 
-通过PE头和DllBase我们就能获得导出函数表EAT。
+通过PE头和DllBase我们就能获得导出函数表EAT，因为ASLR载入随机地址的原因，所以查找 DllBase 是非常重要的一个步骤。
 
 
 ### 4. 定位导出表EAT
@@ -245,13 +254,11 @@ PE 头 结构如下图，IMAGE_DOS_HEADER->e_lfanew值为 000000E8，是PE头的
   	mov ebx, [ecx+32]      ; 获取函数名称地址数组  IMAGE_EXPORT_DIRECTORY->AddressOfNames 的RVA
   	add ebx, edx           ; 函数名称地址数组 的 VA 等于其 RVA + 模块的基地址DllBase
   	mov ecx, [ecx+24]      ; 获取导出函数中具名的函数个数 IMAGE_EXPORT_DIRECTORY->NumberOfNames
-
-……
 ……
 
-get_next_mod:            ;
+get_next_mod:            
   	pop edi                ; Pop off the current (now the previous) modules EAT
-get_next_mod1:           ;
+get_next_mod1:           
   	pop edi                ; 弹出之前的保存的模块hash
   	pop edx                ; 还原之前保存的 InMemoryOrderModuleList 地址
   	mov edx, [edx]         ; InMemoryOrderModuleList是链表结构，[edx]指向指向下一个加载的模块
@@ -259,7 +266,9 @@ get_next_mod1:           ;
 
 ```
 
-导出表EAT的地址为PE头偏移120字节，即 `IMAGE_OPTIONAL_HEADER32.DataDirectory[0].VirtualAddress` 的RVA，具体细节请参考 PE 头文件格式，这里不再详述。其他汇编代码请参考前面的 EAT 结构。
+导出表EAT的地址为PE头偏移120字节，即 `IMAGE_OPTIONAL_HEADER32.DataDirectory[0].VirtualAddress` 的RVA。
+
+具体PE头结构组成细节请参考 PE 头文件格式，这里不再详述。其他汇编代码请参考前面的 EAT 结构。
 
 ### 5. 通过Hash查找目标函数
 
@@ -282,6 +291,7 @@ loop_funcname:           ;
   	cmp edi, [ebp+36]      ; 与目标函数的hash值比较
   	jnz get_next_func      ; 如果不相等，则重复查找
 ```
+
 值得注意的是代码 `mov esi, [ebx+ecx*4] ` ，其中 ebx 表示函数名称地址表 `AddressOfNames` 的VA地址，其中 ecx 作为索引，在该地址表中通过循环逆序查找所有的导出函数名称字符串，ecx*4 是因为一个函数名称占4字节，为双字储存，如图所示
 
 
@@ -298,9 +308,11 @@ loop_funcname:           ;
   	mov eax, [ebx+4*ecx]   ; 获得目标函数的RVA
   	add eax, edx           ; 与DllBase相加得到最终函数的VA,
 ```
-`mov cx, [ebx+2*ecx]` 这一行代码类似 `AddressOfNameOrdinals[index]` ，因为该索引值的大小为2字节，因此需要乘以2.
+`mov cx, [ebx+2*ecx]` 这一行代码类似 `AddressOfNameOrdinals[index]` ，因为该索引值的大小为2字节，因此需要乘以2。
 
-`mov eax, [ebx+4*ecx]  ` 是获得目标函数的RVA，即 `DllBase + IMAGE_EXPORT_DIRECTORY->AddressOfFunctions) + (4 * OrdinalIndex)` 
+
+`mov eax, [ebx+4*ecx]  ` 是获得目标函数的RVA，即 `DllBase + IMAGE_EXPORT_DIRECTORY->AddressOfFunctions) + (4 * OrdinalIndex)` 。
+
 
 至此就基本完成了通过Hash 寻址API的工作，剩下的就是还原堆栈，跳转到对应函数进行调用，这里就不细讲了。
 
