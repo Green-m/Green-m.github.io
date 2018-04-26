@@ -72,7 +72,7 @@ typedef struct _IMAGE_EXPORT_DIRECTORY {
 0x03 Hash API 代码详解
 ------------------
 
-## 0. 与其他方法相比的优缺点
+### 0. 与其他方法相比的优缺点
 
 通常的情况下，在内存中通过 shellcode 来进行函数名比对，来寻址到对应的API函数会浪费比较多的空间，尤其是某些函数名特别长的情况下。
 
@@ -86,7 +86,7 @@ typedef struct _IMAGE_EXPORT_DIRECTORY {
 
 
 
-## 1. 定位 InMemoryOrderModuleList
+### 1. 定位 InMemoryOrderModuleList
 
 //因为ASLR载入随机地址的原因，我们在开始寻址前需要先找到加载模块的列表 `InMemoryOrderModuleList`
 
@@ -181,7 +181,7 @@ typedef struct _LDR_DATA_TABLE_ENTRY
 通过 `InMemoryOrderModuleList` 我们就能够获得进程加载所有的模块的信息了，这个结构很重要，之后我们的寻址主要靠它。
 
 
-## 2. 计算模块Hash
+### 2. 计算模块Hash
 
 继续下面的代码
 
@@ -213,7 +213,7 @@ not_lowercase:           ;
 这里的循环右移13次没有什么特别的含义，只是为了确保得到一个唯一的值，与Hash算法的出发点一样。 如果你愿意你可以修改一下改成自己的算法，如 左移，多重复移动几次，甚至与其他的运算混合使用，只要唯一就可以。 很多恶意软件的作者都对这个 Hash 算法进行了自己的修改以达到免杀的目的。 
 
 
-## 3. 定位模块加载基址DllBase
+### 3. 定位模块加载基址DllBase
 
 ```
   	push edx               ; 保存edx，edx的值指向InMemoryOrderModuleList
@@ -235,7 +235,7 @@ PE 头 结构如下图，IMAGE_DOS_HEADER->e_lfanew值为 000000E8，是PE头的
 通过PE头和DllBase我们就能获得导出函数表EAT。
 
 
-## 4. 定位导出表EAT
+### 4. 定位导出表EAT
 
 ```
   	mov ecx, [ecx+edx+120] ; DllBase+PE头RVA地址+120等于导出表EAT的RVA地址
@@ -261,7 +261,7 @@ get_next_mod1:           ;
 
 导出表EAT的地址为PE头偏移120字节，即 `IMAGE_OPTIONAL_HEADER32.DataDirectory[0].VirtualAddress` 的RVA，具体细节请参考 PE 头文件格式，这里不再详述。其他汇编代码请参考前面的 EAT 结构。
 
-## 5. 通过Hash查找目标函数
+### 5. 通过Hash查找目标函数
 
 这段代码主要是在模块内遍历所有函数，计算hash，与目标函数的hash值进行比对，相等则表示成功找到。
 
