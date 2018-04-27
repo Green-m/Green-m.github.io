@@ -29,9 +29,7 @@ FB:
     duoshuo:
         short_name : __Green_m
     disqus :
-        short_name : __Green_m
-        layout: default
-        comments: true
+        short_name : https-green-m-github-io
     # other options
     # facebook :
     #   appid : 123
