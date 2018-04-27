@@ -29,7 +29,10 @@ FB:
     duoshuo:
         short_name : __Green_m
     disqus :
-        short_name : 
+        short_name : __Green_m
+        layout: default
+        comments: true
+    # other options
     # facebook :
     #   appid : 123
     #   num_posts: 5
