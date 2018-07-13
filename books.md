@@ -16,3 +16,9 @@ permalink: /books/
 + 《ruby元编程》
 
 + 《metasploit精通》
+
++ 《逆向工程核心原理》  
+
++ 《恶意软件分析与实战》  
+
++ 《深入理解计算机系统》（Reading）  
