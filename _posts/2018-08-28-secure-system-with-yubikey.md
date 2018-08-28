@@ -53,22 +53,86 @@ YubiKey NEO  有NFC功能，但是NFC不支持 IOS。而且有一个比较坑的
 
 `apt-get install gnupg`
 
-生成密钥
-`gpg --gen-key`
+生成密钥  
 
-然后会提示你选择密钥的种类，选择第一种 RSA and RSA (default)
+`gpg --full-generate-key`  
 
-然后选择密钥长度，越长越难爆破，我选择 4096
+然后会提示你选择密钥的种类，选择第一种 RSA and RSA (default)。
+```
+$ gpg --full-generate-key
+gpg (GnuPG) 2.2.9; Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
 
-然后选择过期时间，默认是永不过期，妥善保管好的话永不过期也没啥问题。
+Please select what kind of key you want:
+   (1) RSA and RSA (default)
+   (2) DSA and Elgamal
+   (3) DSA (sign only)
+   (4) RSA (sign only)
+Your selection? 1
+```
+
+然后选择密钥长度，越长越难爆破，这里我选择 4096。  
+
+```
+RSA keys may be between 1024 and 4096 bits long.
+What keysize do you want? (2048) 4096
+```
+
+然后选择过期时间，默认是永不过期，妥善保管好的话永不过期也没啥问题。  
+
+```
+Please specify how long the key should be valid.
+         0 = key does not expire
+      <n>  = key expires in n days
+      <n>w = key expires in n weeks
+      <n>m = key expires in n months
+      <n>y = key expires in n years
+Key is valid for? (0)
+```
 
 然后输入y确认信息。 
 
 然后是输入个人信息，包括姓名和电子邮件地址，电子邮件地址蛮重要的，很多地方会校验这个。
 
+```
+GnuPG needs to construct a user ID to identify your key.
+
+Real name: xxxx
+Name must be at least 5 characters long
+Real name: xxxxxx
+Email address: xxxx@xxxxx.com
+Comment: asdsada
+You selected this USER-ID:
+    "xxxxxx (asdsada) <xxxx@xxxxx.com>"
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit?
+```
+
 确认后会要求你输入一个密码来保护私钥，这个密码就是你私钥的最后保护了，不要输入弱口令，尽量强一点。
 
 等待一段时间，就会生成一个密钥。
+
+```
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+gpg: key 5F63DB433630A82E marked as ultimately trusted
+gpg: directory '/Users/green/.gnupg/openpgp-revocs.d' created
+gpg: revocation certificate stored as '/Users/green/.gnupg/openpgp-revocs.d/0D9FCC48E1789FE46AAB8D9A5F63DB433630A82E.rev'
+public and secret key created and signed.
+
+pub   rsa4096 2018-08-28 [SC]
+      0D9FCC48E1789FE46AAB8D9A5F63DB433630A82E
+uid                      xxxxxx (asdsada) <xxxx@xxxxx.com>
+sub   rsa4096 2018-08-28 [E]
+
+```
 
 这里主密钥和公钥就生成完成了，已经能满足基本使用需求了，但是为了能够能充分的使用 Yubikey ，我们还可以添加其他的两个子密钥，用来认证和签名，认证的密钥可以用来对 SSH 登陆进行认证，建议添加。
 
