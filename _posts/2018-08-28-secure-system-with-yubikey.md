@@ -45,7 +45,7 @@ YubiKey NEO  有NFC功能，但是NFC不支持 IOS。而且有一个比较坑的
 
 注意：强烈建议用系统自带的GnuPG生成密钥，不要使用 Yubikey 自带的生成密钥的功能，自带的生成了之后私钥就永远都导不出来了，一旦丢失之前的密钥对全部失效。
 
-这里就以我 Kali 下的环境作为示范，介绍如何生成及导入密钥，其他的系统环境请参考 (Yubikey 官方英文文档)[https://support.yubico.com/support/solutions/articles/15000006420-using-your-yubikey-with-openpgp]
+这里就以我 Kali 下的环境作为示范，介绍如何生成及导入密钥，其他的系统环境请参考 [Yubikey 官方英文文档](https://support.yubico.com/support/solutions/articles/15000006420-using-your-yubikey-with-openpgp)
 
 ### 生成主密钥
 
