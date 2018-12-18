@@ -20,11 +20,7 @@ Contact me
 
 **Twitter**:    [@Greenm94333752](https://twitter.com/Greenm94333752)  
 
-**Weibo**:      [@__Green_m](https://www.weibo.com/u/2585957090)   
-
-**Github**:     [Green-m](https://github.com/Green-m)  
-
-**Telegram**:   [Greenmm](http://t.me/Greenmm)   
+**Github**:     [Green-m](https://github.com/Green-m)   
 
 **Email**:      [greenm.xxoo@gmail.com](mailto:greenm.xxoo@gmail.com)  
 
