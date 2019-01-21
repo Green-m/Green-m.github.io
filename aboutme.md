@@ -18,7 +18,7 @@ A committer for Metasploit Framework.
 Contact me
 =====================
 
-**Twitter**:    [@Greenm94333752](https://twitter.com/Greenm94333752)  
+**Twitter**:    [@Gr33n_m](https://twitter.com/Gr33n_m)  
 
 **Github**:     [Green-m](https://github.com/Green-m)   
 
