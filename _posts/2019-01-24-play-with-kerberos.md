@@ -118,7 +118,7 @@ MS14-068 漏洞，就是基于 PAC 认证的错误，从而导致域内普通用
 
 攻击者在获取了 krbtgt 账号的 ntlm hash 后，就能自己任意伪造 TGT（包括session key，client info等内容），然后直接发送给 kdc，实现任意权限伪造。	
 
-      ![/styles/images/kerberos/goldticket.png]({{ '/styles/images/kerberos/goldticket.png' | prepend: site.baseurl }}) 
+![/styles/images/kerberos/goldticket.png]({{ '/styles/images/kerberos/goldticket.png' | prepend: site.baseurl }}) 
 
 **伪造黄金票据所需信息**
 
