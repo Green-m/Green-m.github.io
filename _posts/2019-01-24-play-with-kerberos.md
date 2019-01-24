@@ -10,8 +10,6 @@ tag: kerberos
 {:toc}
 
 
-# 调戏地狱三头犬 Kerberos
-
 ## 0x00 前言
 
 本文主要介绍一些 Kerberos 协议的原理和围绕其展开的攻防研究，针对黄金/白银票据如何工作的细节进行了一些研究。
@@ -360,6 +358,7 @@ mimikatz “kerberos::golden /admin:Administrator /id:500 /domain:example.domain
 查看一下该函数的实现细节如下（部分代码）：
 
 ```
+{% raw %}
 		ber_printf(pBer, "t{{t{", MAKE_APP_TAG(ID_APP_ENCTICKETPART), MAKE_CTX_TAG(ID_CTX_ENCTICKETPART_FLAGS));
 		kull_m_asn1_BitStringFromULONG(pBer, ticket->TicketFlags);
 		ber_printf(pBer, "}t{", MAKE_CTX_TAG(ID_CTX_ENCTICKETPART_KEY));
@@ -377,6 +376,7 @@ mimikatz “kerberos::golden /admin:Administrator /id:500 /domain:example.domain
 		ber_printf(pBer, "}t{", MAKE_CTX_TAG(ID_CTX_ENCTICKETPART_RENEW_TILL));
 		kull_m_asn1_GenTime(pBer, &ticket->RenewUntil);
 		ber_printf(pBer, "}"); /* ID_CTX_ENCTICKETPART_CADDR not present */
+{% endraw %}
 ```
 
 可以看到一些该部分是由 *ID_CTX_ENCTICKETPART_FLAGS,  ID_CTX_ENCTICKETPART_KEY, ID_CTX_ENCTICKETPART_CREALM* 等信息组成的，这就是 EncTicketPart 的主要组成结构（参考 [RFC4120](https://tools.ietf.org/html/rfc4120#section-5.8)）。
