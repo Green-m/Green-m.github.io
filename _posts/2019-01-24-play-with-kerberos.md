@@ -79,19 +79,29 @@ Kerberos 协议认证的原理和上述提到的 NTLM 有很多类似的地方�
 
 
 1. （**AS-REQ**）Client 发送用户名 Tom 到 KDC （Key Distribution Center）以向 AS （Authentication Service）请求 TGT 票据等信息。
-2. （**AS-REP**）收到请求后，AS 生成随机字符串 Session Key，（？？？加上时间戳 timestamp）使用 Tom 的 NTLM Hash 对 Session Key 加密得到密文 A，再使用账号 krbtgt 的 NTLM Hash 对 Session Key 、 Client Info和 timestamp 加密得到 TGT，A 和 TGT 一起返回给 Client。
+
+2. （**AS-REP**）收到请求后，AS 生成随机字符串 Session Key，使用 Tom 的 NTLM Hash 对 Session Key 加密得到密文 A，再使用账号 krbtgt 的 NTLM Hash 对 Session Key 、 Client Info和 timestamp 加密得到 TGT，A 和 TGT 一起返回给 Client。
+
 3. （**TGS-REQ**） Client 收到请求后，使用自身的 NTLM Hash 解密 A 就能得到 Session Key，然后使用 Session Key 对 Client Info 和 timestamp 加密得到 B，加上 TGT ，发送给 KDC中的 TGS。
+
 4. （**TGS-REP**）TGS  收到请求后，使用 **krbtgt** 的 NTLM Hash 解密 TGT，得到 Session Key 和 timestamp 以及 Client Info，同时，使用 TGT 解密出的 Session Key 解密密文B，得到Client Info 和 timestamp。 比对这两部分解密得到的内容以验证是否通过。通过后，生成一个新的随机数 Session Key2，并用它加密 client info 和 timestamp 得到密文 enc-part；使用服务器计算机的NTLM Hash 对 session key2 和 client info 以及 timestamp 加密得到最终的 Ticket，返回给 Client。
+
 5. （**AP-REQ**）Client 使用 Ticket 和 enc-part 直接请求某服务。
+
 6. （**AP-REP**） 对Ticket 和 enc-part 解密后进行验证授权。
 
 **注意**：
 
 - Kerberos 协议设计的思路就是用来在不受信的环境下进行认证的协议。
+
 - krbtgt 账号的 NTLM Hash 理论上只存在于 KDC 中。这意味着 TGT 只能由 KDC 来解密。如果krbtgt 账号的NTLM Hash泄露了，那么 TGT 就能被解密甚至伪造。伪造的 TGT 叫做黄金票据。
+
 - Ticket 是由服务器计算机本身的 NTLM Hash 加密的，Client 不能解密。如果该Hash 泄露，那么就可以解密甚至伪造 Ticket。伪造的 Ticket 叫做白银票据。
+
 - 在上述的流程中，涉及到时间戳 timestamp，由于它的存在，才使得被第三方获取了加密信息 A 、B、TGT不会在短时间内被暴力破解。timestamp 一般时间为8小时。
+
 - Kerberos 协议和 NTLM 协议都会使用 NTLM Hash 对生成的任意随机数加密，然后比对结果。 Kerberos 的主要区别在于添加了第三方-------KDC参与到认证过程中。
+
 - Client info 中包含域名信息、Client 名称等
 
 
