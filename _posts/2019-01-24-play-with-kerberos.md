@@ -18,22 +18,28 @@ tag: kerberos
 
 本文主要是以 Windows Kerberos 的实现为主，但查阅资料时可能会有部分细节来源自 MIT 的标准，若有纰漏还望读者包涵指正。
 
-## 0x01 NTLM 简介
+## 0x01 NTHash 和 Net-NTLM 
 
-在介绍Kerberos协议之前，先简单介绍一下NTLM的相关知识。
+在介绍Kerberos协议之前，先简单介绍一下 windows 本地存储密码机制的相关知识。
 
-在 Windows中， 存储的密码Hash就叫做 NTLM Hash，其中NTLM 全称是 “NT LAN Manager”，NTLM Hash 由hash 算法（[HMAC](https://en.wikipedia.org/wiki/HMAC) - [MD5](https://en.wikipedia.org/wiki/MD5)）对密码运算后得到。
+### NTHash（A.K.A  NTLM）
 
-在局域网或者域中，经常会使用NTLM 协议来进行认证，大概流程如下：
+在 Windows中， 存储的密码Hash就叫做 **NTHash**，也叫做 **NTLM**，其中NTLM 全称是 “NT LAN Manager”，**NTHash** 是通过对密码明文进行十六进制和unicode转换，然后md4算法运算后得到（算法表示为*MD4(UTF-16-LE(password))* ）。这个 NTHash 就是存在 SAM 数据库里，能够直接被 mimikatz 抓取的 hash，也存在域控的 NTDS 文件中，使用这个 hash 可以直接进行 pass-the-hash 攻击。
+
+### Net-NTLMv2
+
+这是一种网络认证协议，其使用 NTHash 为基础，基于 challenge/response 的机制来实现服务端和客户端的双方认证。在局域网或者域中，经常会使用 **Net-NTLM** 协议来进行认证，大概流程如下：
 
 1. Client 向 Server端发送请求，要求使用 Tom 用户进行认证。
-2. Server 端收到后，生成一个随机字符串C，使用 Tom 账号的 NTLM Hash 对C加密。将未加密的C发送给 Client。
-3. Client 收到C后，用 Tom 的 NTLM Hash 对C 加密，然后发送给 Server。
+2. Server 端收到后，生成一个随机字符串C，使用 Tom 账号的 **NTHash** 对C加密。将未加密的C发送给 Client。
+3. Client 收到C后，用 Tom 的 **NTHash** 对C 加密，然后发送给 Server。
 4. Server 收到后，验证两边加密的结果是否相等，相等就表示通过。
 
-
-
 通过这样的认证流程，就能够在不发送用户密码明文和Hash的情况下进行认证了。
+
+
+通过 Responder 等工具抓取流量获取到的 hash 是 Net-NTLM 加密过后的hash，这类hash不能直接用来进行 pass-the-hash 攻击，但是可以用来进行重放攻击，也存在暴力破解的可能性。具体原因可以参考上面的流程。
+
 
 ## 0x02 Pass The Hash
 
@@ -460,5 +466,5 @@ https://adsecurity.org/?p=2011
 
 https://download.microsoft.com/download/7/7/a/77abc5bd-8320-41af-863c-6ecfb10cb4b9/mitigating%20pass-the-hash%20(pth)%20attacks%20and%20other%20credential%20theft%20techniques_english.pdf
 
-
+https://medium.com/@petergombos/lm-ntlm-net-ntlmv2-oh-my-a9b235c58ed4
 
