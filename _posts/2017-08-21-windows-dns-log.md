@@ -85,3 +85,17 @@ windows 8.1和 windows server 2012 R2及以上版本的操作系统，可以下�
 https://technet.microsoft.com/en-us/library/dn800669(v=ws.11).aspx
 
 
+
+### 使用 powershell 脚本提取 dns 缓存
+
+在 windows 8 和 2012 以后的系统，可以使用 ps 脚本来提取dns缓存记录。
+
+```
+PS C:\> . .\Get-CimDNSCache.ps1 # include file
+PS C:\> Get-CimDNSCache -Name *microsoft* -Type A
+
+```
+
+脚本地址：<https://github.com/PSGumshoe/PSGumshoe/blob/master/CIM/Get-CimDNSCache.ps1>
+
+参考文章： <https://www.darkoperator.com/blog/2020/1/14/getting-dns-client-cached-entries-with-cimwmi>
