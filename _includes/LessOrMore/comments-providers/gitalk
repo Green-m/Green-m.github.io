@@ -4,7 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script> 
 <script>
 var gitalk  = new Gitalk ({
-    id: location.pathname,   // Ensure uniqueness and length less than 50
+    id: '{{page.title}}',   // Ensure uniqueness and length less than 50
     clientID: '{{site.gitalk_clientId}}',
     clientSecret: '{{site.gitalk_clientSecret}}',
     repo: '{{site.github_repo}}',
