@@ -8,10 +8,11 @@ resume_site: http://weibo.com/u/2585957090
 github: https://github.com/Green-m
 baseurl: ""
 description: Do things that others can't do.
-meta_description: 
+meta_description: pentest;渗透测试;Green-m;Metasploit
 motto: The more know the more need to learn.
 banner: Be Modesty.
-
+plugins: 
+  - jekyll-sitemap
 #permalink: /:categories/:year/:month/:day/:title/
 permalink: /:year/:month/:day/:title/
 paginate: 10
@@ -27,8 +28,6 @@ markdown: kramdown
 FB:
   comments :
     provider : disqus 
-    duoshuo:
-        short_name : __Green_m
     disqus :
         short_name : https-green-m-github-io
     # other options
