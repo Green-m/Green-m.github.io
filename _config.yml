@@ -25,11 +25,21 @@ highlighter: rouge
 # Build settings
 markdown: kramdown
 
+
+# gitalk
+github_repo: Green-m.github.io
+github_username: Green-m
+github_admin: Green-m
+gitalk_clientId: 5ebd5082cef1a44ea391
+gitalk_clientSecret: 283bd6b6a75507dbe803025420e08704e60ab176
+
 FB:
   comments :
-    provider : disqus 
-    disqus :
-        short_name : https-green-m-github-io
+    provider : gitalk
+
+#    provider : disqus 
+#    disqus :
+#        short_name : https-green-m-github-io
     # other options
     # facebook :
     #   appid : 123
