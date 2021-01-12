@@ -24,7 +24,7 @@ tag: OPS
 
 早期的流量审计需求不高，抓下全流量就可以，直接买一个流量分光的设备，双网口，一个网口直接串联到设备中间，另一个网口接到抓流量的服务器上，不用改任何网络架构，就实现目的了。 但现在的要求越来越高，需要对HTTPS这样的加密流量也进行解密了，我们只能重新设计网络架构。
 
-#### 选择系统
+#### 一、选择系统
 
 最开始的想法是选用市面上已经有的路由器系统，不是有不少打着名号说自己特别牛逼的全流量审计，解码等等一应俱全的网关，比如 PFsense，WFilter-NGF，RouterOS，openwrt之类的。
 
@@ -34,7 +34,7 @@ tag: OPS
 
 
 
-#### 物理架构图
+#### 二、物理架构图
 
 ![/styles/images/openvpn_traffic/p1.png]({{ '/styles/images/openvpn_traffic/p1.png' | prepend: site.baseurl }})
 
@@ -51,7 +51,7 @@ tag: OPS
 
 
 
-#### 配置 VirtualBox debian 10 作为路由器
+#### 三、配置 VirtualBox debian 10 作为路由器
 
 虚拟机搭建步骤省略， 需要配置物理机的网卡 `enp0s1` 和 `enp0s2`通过桥接模式映射到虚拟机即可：
 
@@ -88,7 +88,7 @@ iptables -t filter -A FORWARD -i enp0s3 -o enp0s8 -m conntrack --ctstate RELATED
 
 
 
-#### 配置 mitmproxy 实现透明代理
+#### 四、配置 mitmproxy 实现透明代理
 
 安装最新版 mitmproxy，使用如下命令抓取流量：
 
@@ -177,7 +177,7 @@ X-CACHE             : HIT from shenzhen.qq.com
 
 
 
-#### dumpcap 抓取全流量
+#### 五、dumpcap 抓取全流量
 
 可以看到我们的 `mitmproxy` 的方案并不完美，只抓取了部分端口号的内容，并不能保证所有流量的记录，因此也十分有必要抓取全部的流量作为备份。
 
@@ -201,7 +201,7 @@ dumpcap -i enp0s8 -w $dir/traffic.pcapng -b filesize:1024000
 
 
 
-#### 使用 NFS 存储数据到物理机
+#### 六、使用 NFS 存储数据到物理机
 
 虚拟机的硬盘容量较小，我们也没必要选择存在虚拟机上，所以选择存放在物理机上，使用NFS的方式。 这里也可以直接虚拟机映射硬盘，方式不局限，这里仅作我的选择的记录。
 
@@ -254,7 +254,7 @@ traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets
 
 
 
-#### OpenVPN 的 Bridge 和 Route 对比
+#### 一、OpenVPN 的 Bridge 和 Route 对比
 
 这篇帖子中提到仅有OpenVPN bridge 模式才能实现这样的功能。先解释一下 bridge 模式和 route 模式的区别（来自官方论坛）：
 
@@ -297,7 +297,7 @@ TAP 设备的缺点：
 
 
 
-#### 搭建 OpenVPN （bridge 模式）
+#### 二、搭建 OpenVPN （bridge 模式）
 
 基本的搭建我们就不赘述了，可以使用官方文档或者一键搭建脚本，需要注意的是，根据官方文档，我们搭建 bridge 模式的话，需要自己创建虚拟网卡 brxxx ，但是在云上一创建就会挂掉，这里我们需要使用其他方式来实现该功能，参考：[is-it-possible-to-set-up-a-bridged-vpn-in-aws](https://superuser.com/questions/1531392/is-it-possible-to-set-up-a-bridged-vpn-in-aws-to-connect-multiple-clients-in-a-s)
 
@@ -374,7 +374,7 @@ client-config-dir /etc/openvpn/ccd
 
 
 
-#### 配置 Server 端的路由
+#### 三、配置 Server 端的路由
 
 通过上面的配置，我们实现了最基础也是最常用的 OpenVPN 架构，多 Client 通过 Server 上网。如果仅仅是这样的话，bridge 和 route 模式几乎没区别。 但接下来的设置，就只有 bridge 模式才能实现了。
 
@@ -415,7 +415,7 @@ default via 192.168.2.200 dev tap0
 
 
 
-#### 配置 Client 端作为网关
+#### 四、配置 Client 端作为网关
 
 Client(`192.168.2.200`) 本来是一个普通的 Linux 服务器，想把它作为 gateway ，是需要一些额外配置的。
 
@@ -435,7 +435,7 @@ iptables -t nat  -A POSTROUTING -s 192.168.2.0/24 ! -d 192.168.2.0/24  -j MASQUE
 
 
 
-#### Client 多网络出口的情况下
+#### 五、Client 多网络出口的情况下
 
 `192.168.2.200` 这台服务器，作为网关时本地有好几张网卡都可以出外网：
 
