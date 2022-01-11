@@ -17,6 +17,10 @@ tag: OPS
 
 为了满足日益增长的渗透测试网络审计需要，特别是从普通的全流量记录，到进一步的HTTPS流量审计，特地设计了一套网络结构，满足简单的傻瓜化远程接入实验室，实现 http/https 全流量记录的功能。
 
+更新记录： 
+
+2022年1月11日 更新：**另一种流量分流的方式（进程分流）** 
+
 
 
 0x01 流量镜像和审计系统
@@ -218,6 +222,67 @@ dumpcap -i enp0s8 -w $dir/traffic.pcapng -b filesize:1024000
 0 */1 * * * cat /proc/mounts | grep -q 192.168.1.128 || systemctl restart remote-fs.target && systemctl restart supervisor
 ```
 
+#### 七、另一种流量分流的方式（进程分流）（2022年1月更新）
+
+上面的方式分流是因为 debian 虚拟机网关已经在流量记录的线路中了，对于网关自己来说就只有一条出口线路，直接设置就OK了。
+
+那么更常见的情况，如网关直连两条线路，要求在网关上进行分流应该怎么操作？ 最近遇到这样的需求，下面总结一下对应的方法。
+
+大体思路是利用 cgroup 标记 mitmproxy 的流量，然后用 iptables 和  ip rule 控制其从流量记录的网卡出站，实现记录的目的。
+
+网络介绍：
+
+```
+enp0s1 192.168.30.2
+enp0s2 192.168.40.2
+```
+两张网卡，默认路由走 enp0s1 出口，为非流量记录线路，enp0s2 为流量记录线路。
+
+iptables 规则：
+
+
+```
+iptables -t nat -A PREROUTING -s 192.168.40.0/24 -p tcp -m tcp --dport 80 -j DNAT --to-destination 192.168.40.2:23333
+iptables -t nat -A PREROUTING -s 192.168.40.0/24 -p tcp -m tcp --dport 443 -j DNAT --to-destination 192.168.40.2:23333
+iptables -t nat -A PREROUTING -s 192.168.40.0/24 -p tcp -m tcp --dport 8080 -j DNAT --to-destination 192.168.40.2:23333
+iptables -t mangle -A OUTPUT -m cgroup --cgroup 0x00110011 -j MARK --set-mark 11
+iptables -t nat -A POSTROUTING -m cgroup --cgroup 0x00110011 -o enp0s2 -j MASQUERADE
+```
+PREROUTING 的规则和上面第一种方法一样，只不过指定了网卡的地址，效果没有区别。
+
+mangle 和 POSTROUTING 的规则需要结合 cgroup 的规则一起理解，就是将其 mark ，然后将 mark 后的流量从 enp0s2 网卡出站。
+
+下面设置 cgroup:
+
+```
+apt-get install  cgroup-tools cgroup-bin
+mkdir /sys/fs/cgroup/net_cls/mitmproxy
+cd /sys/fs/cgroup/net_cls/mitmproxy
+echo 0x00110011 > net_cls.classid
+```
+这里是创建了一个 cgroup 规则，然后创建了一个 mitmproxy 的组，classid 设置为 `0x00110011`。
+
+然后设置路由
+
+```
+echo 11 mitmproxy >> /etc/iproute2/rt_tables
+
+ip rule add fwmark 11 table mitmproxy
+
+ip route add default via 192.168.40.1 table mitmproxy
+```
+
+这些命令的作用在下文 **OpenVPN Client as gateway** 都有解释，这里就不详细多做解释了。
+
+然后使用 cgroup 启动 mitmdump ：
+
+
+```
+cgexec -g net_cls:mitmproxy mitmdump --mode transparent --showhost -p 23333 
+```
+这样 mitmdump 的所有流量都会从网卡 enp0s2 出站了，流量也会被记录下来，这样就完美实现需求了。
+
+值得注意的是， `ip route` 和 `cgroup` 相关的规则是临时性的，和 `iptables` 一样，需要进行设置才能实现重启自动生效，这里就不展开了。
 
 
 这里我们已经实现了流量审计的功能，接下来需要考虑的是如何远程接入审计系统。
@@ -511,6 +576,8 @@ iptables -t mangle -A PREROUTING -i tap0 -s 192.168.2.0/24 ! -d 192.168.2.0/24 -
 [howto-transparent](https://docs.mitmproxy.org/stable/howto-transparent/)
 
 [iptables深入解析-mangle篇](https://developer.aliyun.com/article/417740)
+
+[Route the traffic over specific interface for a process in linux](https://superuser.com/questions/271915/route-the-traffic-over-specific-interface-for-a-process-in-linux)
 
 
 
