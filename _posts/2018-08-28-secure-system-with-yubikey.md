@@ -12,6 +12,13 @@ tag: yubikey
 
 0x00 前言
 ------------------
+
+2022-12-15：
+更新 SSH 登陆部分。
+
+------------------
+
+
 最开始了解到 yubikey 是因为和一个朋友聊到 PGP 的问题，我觉得 PGP 保存私钥很麻烦，换一个环境或者电脑被搬走的话还是存在一些风险的，放云上就更加不用说了。然后他就说你可以考虑一下 yubikey。 
 
 其实我之前也听某个群里的大佬说到过 yubikey，初听时就觉得这个东西应该很不错，安全级别应该很高，因为那会还没有开始使用 PGP，只是把 yubikey 当作一个开机的智能卡，所以也就没有深入去了解这个东西了。
@@ -364,6 +371,39 @@ gig-connect-agent /bye
 
 接下来就把刚才的 SSH 公钥，然后添加到对应主机的文件 `~/.ssh/authorized_keys` 中，以后就可以插上yubikey 直接使用 ssh 连接了。
 
+### FIDO/FIDO2 结合 SSH (2022-12-25更新)
+
+从 openssh 8.2 版本之后（客户端和服务端需要同时满足）， openssh 默认支持 FIDO/FIDO2 的认证方式，这意味着可以原生支持 yubikey 等智能卡登陆了。
+
+如果你不确定自己的 openssh 版本，可以使用命令 `ssh -V` 查看。 如果使用的是 Macos(12.5.1 测试)，系统自带的 openssh 去掉了智能卡的支持[^1]，需要重新安装。
+
+```
+brew install openssh
+export PATH=$(brew --prefix openssh)/bin:$PATH
+```
+
+生成 ecdsa-sk 类型的公私钥对：
+
+```
+ssh-keygen -t ecdsa-sk  -C "Your yubikey name" -f ~/.ssh/myyubikey
+```
+如果想将该对密钥持久的保存在 yubikey 中，可以使用 resident 选项。
+
+```
+ssh-keygen -t ecdsa-sk -O resident -C "Your yubikey name" -f ~/.ssh/myyubikey
+```
+
+yubikey 提供了少量的存储空间，可以用来存储有限的 FIDO2 认证密钥。 如果换了新电脑或者新环境，可以使用如下命令恢复该密钥对。
+
+```
+ssh-keygen -K
+```
+
+执行后会在当前目录重新恢复之前的密钥对。 需要值得注意的是，智能卡生成的私钥不是真正的私钥，而是上文导入过后的 gpg 私钥一样，都是一个引用。所以重新恢复的密钥对，公钥是相同的，私钥则可以不同。
+
+生成完之后把公钥上传到服务器即可正常使用，不用安装额外的 agent。 但之前使用 gpg-agent 的方式也有优点，因为使用 gpg 密钥对来认证，这意味着只要你的多个智能卡导入了同一个密钥，那么就可以无缝切换。而且没有版本要求，所以兼容性较好。
+
+
 0x05 其他使用
 ------------------
 
@@ -382,3 +422,11 @@ gig-connect-agent /bye
 从这个角度来讲，Yubikey 完美解决了我的保管密钥的痛点，感觉很棒。
 
 如果你也有和我类似的困扰，欢迎尝试yubikey。
+
+
+
+
+
+[^1]: https://stackoverflow.com/questions/68573454/having-difficulty-to-get-ssh-with-a-yubikey-working-with-macos-monterey
+
+
