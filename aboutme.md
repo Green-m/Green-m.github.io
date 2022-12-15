@@ -24,4 +24,4 @@ Contact me
 
 **Email**:      [greenm.xxoo@gmail.com](mailto:greenm.xxoo@gmail.com)  
 
-**PGP**:        [keybase](https://keybase.io/green_m/pgp_keys.asc)
+**PGP**:        [keybase](https://keybase.io/green_m/pgp_keys.asc) or [github](https://green-m.me/pgp_key.asc)
