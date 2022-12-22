@@ -2,8 +2,7 @@
 layout: post
 title:  "调戏地狱三头犬 Kerberos"
 date:   2019-01-24 16:10:01 +0800
-categories: Lateral-movement
-tag: kerberos
+categories: Windows
 ---
 
 * content

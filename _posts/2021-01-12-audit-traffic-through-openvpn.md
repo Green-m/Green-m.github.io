@@ -2,8 +2,7 @@
 layout: post
 title:  "通过 OpenVPN 实现流量审计"
 date:   2021-01-12 15:20:01 +0800
-categories: Audit 
-tag: OPS 
+categories: Misc 
 ---
 
 * content

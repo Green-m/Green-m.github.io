@@ -2,8 +2,7 @@
 layout: post
 title:  "openwrt 路由器的奇怪 DNS 劫持"
 date:   2022-11-01 17:00:01 +0800
-categories: Other
-tag: Linux
+categories: Misc
 ---
 
 * content

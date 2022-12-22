@@ -3,7 +3,6 @@ layout: post
 title:  "Bypass AV meterpreter免杀技巧"
 date:   2016-11-15 14:41:01 +0800
 categories: MSF
-tag: Bypass AV
 ---
 
 * content

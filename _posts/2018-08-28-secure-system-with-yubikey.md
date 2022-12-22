@@ -2,8 +2,7 @@
 layout: post
 title:  "使用 Yubikey 加固你的系统"
 date:   2018-08-28 16:20:01 +0800
-categories: PGP
-tag: yubikey
+categories: Misc
 ---
 
 * content

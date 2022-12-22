@@ -2,8 +2,7 @@
 layout: post
 title:  "对基础 shell 进行流量混淆"
 date:   2019-11-06 19:10:01 +0800
-categories: Lateral-movement 
-tag: Bypass AV 
+categories: Unix
 ---
 
 * content

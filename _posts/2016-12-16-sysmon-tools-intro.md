@@ -2,8 +2,7 @@
 layout: post
 title:  "使用轻量级工具Sysmon监视你的系统"
 date:   2016-12-16 12:04:01 +0800
-categories: tools
-tag: Sysmon
+categories: Windows
 ---
 
 * content

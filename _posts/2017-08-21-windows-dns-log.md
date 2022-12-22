@@ -2,8 +2,7 @@
 layout: post
 title:  "DNS日志记录方法"
 date:   2017-08-21 13:05:01 +0800
-categories: Audit
-tag: DNS Log 
+categories: Windows
 ---
 
 * content

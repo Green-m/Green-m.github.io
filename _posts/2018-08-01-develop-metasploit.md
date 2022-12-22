@@ -3,7 +3,6 @@ layout: post
 title:  "Metasploit 开发指北"
 date:   2018-08-01 10:22:01 +0800
 categories: MSF
-tag: ruby
 ---
 
 * content

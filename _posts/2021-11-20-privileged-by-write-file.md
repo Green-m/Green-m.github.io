@@ -2,8 +2,7 @@
 layout: post
 title:  "操作 linux 文件提权"
 date:   2021-11-20 16:00:01 +0800
-categories: Pentest
-tag: Linux
+categories: Unix
 ---
 
 * content

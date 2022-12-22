@@ -2,8 +2,7 @@
 layout: post
 title:  "使用Snort检测企业流量"
 date:   2018-01-05 16:10:01 +0800
-categories: IDS 
-tag: Snort 
+categories: Misc 
 ---
 
 * content

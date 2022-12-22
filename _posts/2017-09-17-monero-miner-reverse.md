@@ -2,8 +2,7 @@
 layout: post
 title:  "某门罗币挖矿木马分析及溯源"
 date:   2017-09-17 23:41:01 +0800
-categories: Reverse 
-tag: malware 
+categories: Windows 
 ---
 
 * content

@@ -3,7 +3,6 @@ layout: post
 title:  "shellter加载自定义payload"
 date:   2016-11-22 16:00:01 +0800
 categories: MSF
-tag: Bypass AV
 ---
 
 * content
