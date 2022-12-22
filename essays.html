@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Green_m
+title: Green_m's essays
 ---
 
  <div class="container docs-container">
@@ -10,12 +10,13 @@ title: Green_m
             <div id="navigation">
               <h1>Index</h1>
               <ul class="nav sidenav">
-		{% assign ordered_posts = site.posts  | sort: "date" | reverse %}
-                {% for post in ordered_posts  %}
+                {% assign ordered_essays = site.essays  | sort: "date" | reverse %}
+                {% for post in ordered_essays %}
                   {% capture this_year %}{{ post.date | date: "%Y" }}{% endcapture %}
                   {% capture this_month %}{{ post.date | date: "%B" }}{% endcapture %}
                   {% capture next_year %}{{ post.previous.date | date: "%Y" }}{% endcapture %}
                   {% capture next_month %}{{ post.previous.date | date: "%B" }}{% endcapture %}
+
 
                   {% if forloop.first %}
                     <li><a href="#year_{{this_year}}">{{this_year}}</a>
@@ -48,8 +49,8 @@ title: Green_m
           <div class="panel docs-content">
             <div class="wrapper">
               <div class="home">
-		{% assign ordered_posts = site.posts  | sort: "date" | reverse %}
-                {% for post in ordered_posts  %}
+		        {% assign ordered_essays = site.essays | sort: "date" | reverse %}
+                {% for post in ordered_essays %}
                   {% capture this_year %}{{ post.date | date: "%Y" }}{% endcapture %}
                   {% capture this_month %}{{ post.date | date: "%B" }}{% endcapture %}
                   {% capture next_year %}{{ post.previous.date | date: "%Y" }}{% endcapture %}

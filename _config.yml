@@ -8,7 +8,7 @@ resume_site: http://weibo.com/u/2585957090
 github: https://github.com/Green-m
 baseurl: ""
 description: Do things that others can't do.
-meta_description: pentest;渗透测试;Green-m;Metasploit;Security
+meta_description: pentest;Green-m;Metasploit;Security
 motto: The more know the more need to learn.
 banner: Be Modesty.
 plugins: 
@@ -32,6 +32,13 @@ github_username: Green-m
 github_admin: Green-m
 gitalk_clientId: 5ebd5082cef1a44ea391
 gitalk_clientSecret: 283bd6b6a75507dbe803025420e08704e60ab176
+
+collections:
+  essays:
+    output: true
+    permalink: /essays/:year/:month/:day/:title/
+    #sort_by: date
+    #reverse: true
 
 FB:
   comments :
