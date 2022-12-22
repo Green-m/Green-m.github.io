@@ -13,6 +13,7 @@ motto: The more know the more need to learn.
 banner: Be Modesty.
 plugins: 
   - jekyll-sitemap
+  - jekyll-paginate
 #permalink: /:categories/:year/:month/:day/:title/
 permalink: /:year/:month/:day/:title/
 paginate: 10

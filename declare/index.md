@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: essay
 title: 声明
 header: 声明
 ---
