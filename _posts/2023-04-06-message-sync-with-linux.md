@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Linux 服务器短信接收并同步方案"
+title:  "Linux 服务器短信接收同步"
 date:   2023-04-06 11:32:01 +0800
 categories: Misc
 ---
@@ -160,9 +160,12 @@ curl "https://api.day.app/<token>/$1"
 
 ### 0xff 参考
 
-gammu 官方文档： https://docs.gammu.org/
-自建短信中转服务：https://zhuanlan.zhihu.com/p/53387245
-get-notification-when-systemd-monitored-service-enters-failed-state： https://serverfault.com/questions/694818/get-notification-when-systemd-monitored-service-enters-failed-state
+gammu 官方文档： https://docs.gammu.org/  
+
+自建短信中转服务：https://zhuanlan.zhihu.com/p/53387245  
+
+get-notification-when-systemd-monitored-service-enters-failed-state： https://serverfault.com/questions/694818/get-notification-when-systemd-monitored-service-enters-failed-state  
+
 
 
 
