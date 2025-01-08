@@ -79,7 +79,7 @@ reddit 的[帖子](https://www.reddit.com/r/Ubiquiti/comments/idshm5/how_can_i_m
 
 没搜到同款的风扇，搜到了一个近似款的，型号为 MC30151V2-000U-A99 Sunon ，感觉数据可能差不多。
 
-![/styles/images/us16xg/sunon_fan_6.jpg]({{ '/styles/images/us16xg/sunon_fan_6.jpg' | prepend: site.baseurl }})
+![/styles/images/us16xg/sunon_fan_6.png]({{ '/styles/images/us16xg/sunon_fan_6.png' | prepend: site.baseurl }})
 
 可以看到这个小风扇最大转速能达到 7000 RPM，噪音可以达到 20 dB(A)，当然这个值噪音值也不是很高，但实验室数据和实际数据存在较大偏差也是正常的。 :)
 
@@ -94,7 +94,7 @@ reddit 的[帖子](https://www.reddit.com/r/Ubiquiti/comments/idshm5/how_can_i_m
 
 官方对于减速线的效果是有统计图的：
 
-![/styles/images/us16xg/noc_fan_9.jpg]({{ '/styles/images/us16xg/noc_fan_9.jpg' | prepend: site.baseurl }})
+![/styles/images/us16xg/noc_fan_9.png]({{ '/styles/images/us16xg/noc_fan_9.png' | prepend: site.baseurl }})
 
 使用 ULNA 跟不用的效果确实非常明显，但我家里因为其他设备也挺吵的，根本没有那么安静，所以我就没有接任何的减速线。
 
@@ -130,12 +130,12 @@ reddit 的[帖子](https://www.reddit.com/r/Ubiquiti/comments/idshm5/how_can_i_m
 
 换之前：
 
-![/styles/images/us16xg/before_10.jpg]({{ '/styles/images/us16xg/before_10.jpg' | prepend: site.baseurl }})
+![/styles/images/us16xg/before_10.png]({{ '/styles/images/us16xg/before_10.png' | prepend: site.baseurl }})
 
 
 换之后：
 
-![/styles/images/us16xg/after_11.jpg]({{ '/styles/images/us16xg/after_11.jpg' | prepend: site.baseurl }})
+![/styles/images/us16xg/after_11.png]({{ '/styles/images/us16xg/after_11.png' | prepend: site.baseurl }})
 
 
 可以看到温度和风扇和原来是差不多的，但噪音却已经小了非常多。
