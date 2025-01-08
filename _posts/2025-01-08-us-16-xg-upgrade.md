@@ -150,7 +150,7 @@ reddit 的[帖子](https://www.reddit.com/r/Ubiquiti/comments/idshm5/how_can_i_m
 
 [Silencing the Ubiquiti US-16XG 10G switch](https://vcojot.blogspot.com/2020/09/silencing-ubiquiti-us-16xg-10g-switch.html)  
 
-[MC30151V2-000U-A99 Sunon 风扇手册](https://www.mouser.sg/datasheet/2/659/Sunon_08142017_MC30151V2-000U-A99))0(D03022490G-00-1216833.pdf)  
+[MC30151V2-000U-A99 Sunon 风扇手册](https://www.mouser.sg/datasheet/2/659/Sunon_08142017_MC30151V2-000U-A99%29%290%28D03022490G-00-1216833.pdf)
 
 [UniFi_Switch_US-16-XG_DS](https://dl.ui.com.cn/datasheets/unifi/UniFi_Switch_US-16-XG_DS.pdf)  
 
